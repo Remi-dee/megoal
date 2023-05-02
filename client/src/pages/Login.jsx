@@ -1,96 +1,84 @@
+import { useState, useEffect } from "react";
+import { FaSignInAlt, FaUser } from "react-icons/fa";
+
 function Login() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = formData;
+  const onSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  const onChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
   return (
-    <div>
-      <h1>Login</h1>
-
-      <section className="">
-          <div className="w-full max-w-xs">
-            <form
-              action=""
-              className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-            >
-              <div className="mb-4">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="username"
-                >
-                  Enter your name
-                </label>
-
-                <input
-                  type="text"
-                  className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="name"
-                  name="name"
-                  value={name}
-                  placeholder="Name"
-                  onChange={onChange}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="email"
-                >
-                  Enter your email
-                </label>
-
-                <input
-                  type="text"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="email"
-                  name="email"
-                  value={email}
-                  placeholder="Email"
-                  onChange={onChange}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="password"
-                >
-                  Enter your password
-                </label>
-
-                <input
-                  type="text"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="password"
-                  name="password"
-                  value={password}
-                  placeholder="Password"
-                  onChange={onChange}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="confirm password"
-                >
-                  Confirm password
-                </label>
-
-                <input
-                  type="text"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="cPassword"
-                  name="cPassword"
-                  value={cPassword}
-                  placeholder="Password"
-                  onChange={onChange}
-                />
-
-                <button className=""></button>
-              </div>
-            </form>
+    <>
+      <section className="flex flex-col mx-auto items-center bg-gray-50">
+        {/*Title Head*/}
+        <div className="flex items-center flex-col mt-10 lg:mt-20">
+          <div className="flex items-end">
+            <FaUser className="mr-3 h-11 w-7 lg:w-8" />
+            <h1 className="text-3xl lg:text-4xl font-bold">Sign up</h1>
           </div>
-        </section>
-    </div>
-  )
+
+          <p className="my-4 text-lg text-gray-400">
+            Login and start your goal adventure
+          </p>
+        </div>
+
+        {/*Register Form*/}
+
+        <div className="">
+          <form
+            action=""
+            onSubmit={onSubmit}
+            className="bg-white p-10 w-full md:space-y-6 "
+          >
+            <div className="mb-4">
+              <label className="label" htmlFor="email">
+                Your email
+              </label>
+
+              <input
+                type="text"
+                className="input"
+                id="email"
+                name="email"
+                value={email}
+                placeholder="Email"
+                onChange={onChange}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="label" htmlFor="password">
+                Password
+              </label>
+
+              <input
+                type="text"
+                className="input"
+                id="password"
+                name="password"
+                value={password}
+                placeholder="Password"
+                onChange={onChange}
+              />
+            </div>
+
+            <button className="button">Sign up</button>
+          </form>
+        </div>
+      </section>
+    </>
+  );
 }
 
-export default Login
+export default Login;
