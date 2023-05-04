@@ -1,17 +1,47 @@
 import { useState, useEffect } from "react";
 import { FaSignInAlt, FaUser } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { register, reset, selectState } from "../slices/authSlice";
 
 function Register() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    mobile: "",
     password: "",
     cPassword: "",
   });
 
-  const { name, email, password, cPassword } = formData;
+  const { name, email, mobile, password, cPassword } = formData;
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isError, isSuccess, message } =
+    useSelector(selectState);
+
+  useEffect(() => {
+    if (isError) toast.error(message);
+
+    if (isSuccess || user) navigate("/");
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
   const onSubmit = (e) => {
     e.preventDefault();
+    if (password !== cPassword) {
+      toast.error("Password do not match!");
+    } else {
+      const userData = {
+        name,
+        email,
+        mobile,
+        password,
+      };
+
+      dispatch(register(userData));
+    }
   };
 
   const onChange = (e) => {
@@ -30,9 +60,7 @@ function Register() {
             <h1 className="text-3xl lg:text-4xl font-bold">Sign up</h1>
           </div>
 
-          <p className="my-4 text-lg text-gray-400">
-            Kindly create an account
-          </p>
+          <p className="my-4 text-lg text-gray-400">Kindly create an account</p>
         </div>
 
         {/*Register Form*/}
@@ -69,6 +97,23 @@ function Register() {
                 name="email"
                 value={email}
                 placeholder="Email"
+                onChange={onChange}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="label" htmlFor="email">
+                Your phone number
+                <span className="text-xs text-gray-400">(optional)</span>
+              </label>
+
+              <input
+                type="text"
+                className="input"
+                id="mobile"
+                name="mobile"
+                value={mobile}
+                placeholder="mobile"
                 onChange={onChange}
               />
             </div>
