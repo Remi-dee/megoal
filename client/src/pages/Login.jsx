@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { FaSignInAlt, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Spinner from "../components/Spinner";
+import { signIn, reset, selectState } from "../slices/authSlice";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -8,9 +13,22 @@ function Login() {
   });
 
   const { email, password } = formData;
-  const onSubmit = (e) => {
-    e.preventDefault();
-  };
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isError, isSuccess, message } =
+    useSelector(selectState);
+
+  useEffect(() => {
+    if (isError) toast.error(message);
+
+    if (isSuccess || user) navigate("/");
+
+    if (isSuccess) toast.success(`Welcome back ${user.name}`);
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData((prev) => ({
@@ -18,6 +36,23 @@ function Login() {
       [e.target.name]: e.target.value,
     }));
   };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const userData = {
+      email,
+      password,
+    };
+
+    dispatch(signIn(userData));
+  };
+
+  if (isLoading) {
+    //toast.pending("Loading");
+    return <Spinner />;
+  }
+
   return (
     <>
       <section className="flex flex-col mx-auto items-center bg-gray-50">
@@ -25,7 +60,7 @@ function Login() {
         <div className="flex items-center flex-col mt-10 lg:mt-20">
           <div className="flex items-end">
             <FaUser className="mr-3 h-11 w-7 lg:w-8" />
-            <h1 className="text-3xl lg:text-4xl font-bold">Sign up</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">Sign in</h1>
           </div>
 
           <p className="my-4 text-lg text-gray-400">
@@ -47,7 +82,7 @@ function Login() {
               </label>
 
               <input
-                type="text"
+                type="email"
                 className="input"
                 id="email"
                 name="email"
@@ -63,7 +98,7 @@ function Login() {
               </label>
 
               <input
-                type="text"
+                type="password"
                 className="input"
                 id="password"
                 name="password"
@@ -73,7 +108,7 @@ function Login() {
               />
             </div>
 
-            <button className="button">Sign up</button>
+            <button className="button">Sign in</button>
           </form>
         </div>
       </section>

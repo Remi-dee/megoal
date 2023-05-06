@@ -29,11 +29,34 @@ export const register = createAsyncThunk(
   }
 );
 
+// sign user in
+export const signIn = createAsyncThunk(
+  "auth/signInStatus",
+  async (user, thunkAPI) => {
+    try {
+      return await authService.signIn(user);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// sign user out
+export const signOut = createAsyncThunk("auth/signOut", async () => {
+  await authService.signOut();
+});
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-   // standard reducer logic, with auto-generated action types per reducer
+    // standard reducer logic, with auto-generated action types per reducer
     reset: (state) => {
       state.isLoading = false;
       state.isSuccess = false;
@@ -44,7 +67,7 @@ export const authSlice = createSlice({
 
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder
+    builder //register case
       .addCase(register.pending, (state) => {
         state.isLoading = true;
       })
@@ -57,6 +80,23 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+        state.user = null;
+      }) //signIn case
+      .addCase(signIn.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(signIn.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(signIn.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.user = null;
+      }) //sign out case
+      .addCase(signOut.fulfilled, (state) => {
         state.user = null;
       });
   },

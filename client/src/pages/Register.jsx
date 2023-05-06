@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { FaSignInAlt, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Spinner from "../components/Spinner";
 import { register, reset, selectState } from "../slices/authSlice";
 
 function Register() {
@@ -26,7 +27,17 @@ function Register() {
     if (isError) toast.error(message);
 
     if (isSuccess || user) navigate("/");
+    if (isSuccess) toast.success(`Welcome ${user.name}`);
+
+    dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+  const onChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -44,16 +55,14 @@ function Register() {
     }
   };
 
-  const onChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  if (isLoading) return <Spinner />;
+
   return (
     <>
       <section className="flex flex-col mx-auto items-center bg-gray-50">
-        {/*Title Head*/}
+        {
+          // Title Head
+        }
         <div className="flex items-center flex-col mt-10 lg:mt-20">
           <div className="flex items-end">
             <FaUser className="mr-3 h-11 w-7 lg:w-8" />
@@ -117,37 +126,38 @@ function Register() {
                 onChange={onChange}
               />
             </div>
+            <div className="flex ">
+              <div className="mb-4">
+                <label className="label" htmlFor="password">
+                  Password
+                </label>
 
-            <div className="mb-4">
-              <label className="label" htmlFor="password">
-                Password
-              </label>
+                <input
+                  type="password"
+                  className="input"
+                  id="password"
+                  name="password"
+                  value={password}
+                  placeholder="Password"
+                  onChange={onChange}
+                />
+              </div>
 
-              <input
-                type="text"
-                className="input"
-                id="password"
-                name="password"
-                value={password}
-                placeholder="Password"
-                onChange={onChange}
-              />
-            </div>
+              <div className="mb-4 ml-4">
+                <label className="label" htmlFor="confirm password">
+                  Confirm password
+                </label>
 
-            <div className="mb-4">
-              <label className="label" htmlFor="confirm password">
-                Confirm password
-              </label>
-
-              <input
-                type="text"
-                className="input"
-                id="cPassword"
-                name="cPassword"
-                value={cPassword}
-                placeholder="Password"
-                onChange={onChange}
-              />
+                <input
+                  type="password"
+                  className="input"
+                  id="cPassword"
+                  name="cPassword"
+                  value={cPassword}
+                  placeholder="Password"
+                  onChange={onChange}
+                />
+              </div>
             </div>
             <button className="button">Sign up</button>
           </form>
