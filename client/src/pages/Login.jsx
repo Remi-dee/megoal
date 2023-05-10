@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
-import { signIn, reset, selectState } from "../slices/authSlice";
+import { signIn, reset, selectState } from "../slices/auth/authSlice";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -108,7 +108,7 @@ function Login() {
               />
             </div>
 
-            <button className="button">Sign in</button>
+            <button className="button" type="submit">Sign in</button>
           </form>
         </div>
       </section>
