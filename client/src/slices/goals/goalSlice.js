@@ -9,7 +9,7 @@ const initialState = {
   message: "",
 };
 
-// Set goals
+// Create goals
 export const createGoal = createAsyncThunk(
   "goals/create",
   async (goalData, thunkAPI) => {
@@ -58,7 +58,7 @@ export const goalSlice = createSlice({
 
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder //register case
+    builder //createGoal case
       .addCase(createGoal.pending, (state) => {
         state.isLoading = true;
       })

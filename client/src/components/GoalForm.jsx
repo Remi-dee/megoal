@@ -4,34 +4,68 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
-import { signIn, reset, selectState } from "../slices/auth/authSlice";
 import { createGoal } from "../slices/goals/goalSlice";
 
 function GoalForm() {
-  const {text, setText} = useState("")
+  const { text, setText } = useState("");
 
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
 
   const onSubmit = (e) => {
-e.preventFault()
+    e.preventDefault();
 
-dispatch(createGoal(text))
-setText("")
-  }
-  
-    return (
-    <form onSubmit={onsubmit}>
-      <div className="form-group">
-        <label htmlFor="text">Goal</label>
-        <input type="text" id="text" value={text}
-        onChange={(e) => setText(e.target.value)}/>
-      </div>
-      <div className="">
-        <button className="button" type="submit">Add Goal</button>
-      </div>
-     
-    </form>
-  )
+    dispatch(createGoal({ text }));
+    setText("");
+  };
+
+  return (
+    <>
+      <form onSubmit={onsubmit}>
+        <div className=" mb-4 border border-gray-200 rounded-lg bg-gray-50 mx-auto ">
+          <div className="px-4 py-2 bg-white rounded-t">
+            <label htmlFor="text">Your goal</label>
+            <textarea
+              type="text"
+              id="text"
+              rows="4"
+              className="w-full mt-2 text-sm text-gray-900 bg-white border-0  focus:ring-0  p-4 "
+              placeholder="Set your goal..."
+              required
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            ></textarea>
+          </div>
+          <div className="flex items-center justify-between px-3 py-2 border-t">
+            <button
+              
+              type="submit"
+              className="  items-center mx-auto  py-2.5 px-4 text-xs font-medium text-center text-white bg-black rounded-lg focus:ring-4 focus:ring-blue-200  hover:bg-gray-700"
+            >
+              Add Goal
+            </button>
+          </div>
+        </div>
+      </form>
+
+      {/*<form onSubmit={onsubmit}>
+        <div className="form-group">
+          <label htmlFor="text">Goal</label>
+          <input
+            className="w-full mt-2 text-sm text-gray-900 bg-white border-0  focus:ring-0  p-4"
+            type="text"
+            id="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+        </div>
+        <div className="">
+          <button className="button" type="submit">
+            Add Goal
+          </button>
+        </div>
+      </form>*/}
+    </>
+  );
 }
 
-export default GoalForm
+export default GoalForm;
