@@ -7,20 +7,21 @@ import Spinner from "../components/Spinner";
 import { createGoal } from "../slices/goals/goalSlice";
 
 function GoalForm() {
-  const { text, setText } = useState("");
+  const [text, setText] = useState("");
 
   const dispatch = useDispatch();
 
   const onSubmit = (e) => {
     e.preventDefault();
-
+    console.log("goal added");
+    console.log(text);
     dispatch(createGoal({ text }));
     setText("");
   };
 
   return (
     <>
-      <form onSubmit={onsubmit}>
+      <form onSubmit={onSubmit}>
         <div className=" mb-4 border border-gray-200 rounded-lg bg-gray-50 mx-auto ">
           <div className="px-4 py-2 bg-white rounded-t">
             <label htmlFor="text">Your goal</label>
@@ -37,7 +38,6 @@ function GoalForm() {
           </div>
           <div className="flex items-center justify-between px-3 py-2 border-t">
             <button
-              
               type="submit"
               className="  items-center mx-auto  py-2.5 px-4 text-xs font-medium text-center text-white bg-black rounded-lg focus:ring-4 focus:ring-blue-200  hover:bg-gray-700"
             >

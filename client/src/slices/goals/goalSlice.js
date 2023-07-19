@@ -15,6 +15,7 @@ export const createGoal = createAsyncThunk(
   async (goalData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
+      console.log(Array.isArray(initialState.goals));
       return await goalService.createGoal(goalData, token);
     } catch (error) {
       const message =
@@ -58,15 +59,17 @@ export const goalSlice = createSlice({
 
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder //createGoal case
+    builder
       .addCase(createGoal.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(createGoal.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.goals.push(action.payload);
+        console.log(Array.isArray(state.goals));
+        state.goals = [...state.goals, action.payload];
       })
+
       .addCase(createGoal.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
