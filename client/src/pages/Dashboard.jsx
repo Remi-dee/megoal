@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 import { selectState } from "../slices/auth/authSlice";
-import { reset, selectGoals } from "../slices/goals/goalSlice";
+import { reset } from "../slices/auth/authSlice";
 
 import GoalForm from "../components/goalForm";
-import { getGoals } from "../slices/goals/goalSlice";
+import { getGoals, selectGoals } from "../slices/goals/goalSlice";
 import GoalItem from "../components/GoalItem";
 
 function Dashboard() {
   const navigate = useNavigate();
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
   const { user } = useSelector(selectState);
   const { goals, isLoading, isError, message } = useSelector(selectGoals);
 
@@ -22,15 +22,22 @@ function Dashboard() {
     if (!user) navigate("/login");
 
     dispatch(getGoals());
-
-    if (isLoading) return <Spinner />;
-  }, [user, navigate, isError, dispatch, isLoading, message]);
+    return () => {
+      dispatch(reset());
+    };
+  }, [user, navigate, isError, dispatch, message]);
 
   return (
     <div>
       <section className="">
-        <h1>Welcome {user && user.name}</h1>
-        <p>Goals Dasboard</p>
+        <div className="flex items-center flex-col mt-10 lg:mt-20">
+          <h1 className="text-5xl lg:text-4xl font-bold">
+            Welcome {user && user.name}!
+          </h1>
+          <p className="my-4 font-weight-700  text-3xl text-gray-500">
+            Goals Dasboard
+          </p>
+        </div>
         <GoalForm />
       </section>
 
@@ -38,7 +45,7 @@ function Dashboard() {
         {goals.length > 0 ? (
           <div className="">
             {goals.map((goal) => (
-              <GoalItem key={goal._id} />
+              <GoalItem key={goal._id} goal={goal} />
             ))}
           </div>
         ) : (
