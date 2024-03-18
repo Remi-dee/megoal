@@ -7,11 +7,7 @@ import Spinner from "../components/Spinner";
 import { createGoal } from "../slices/goals/goalSlice";
 
 function GoalForm() {
-<<<<<<< HEAD
-  const { text, setText } = useState("");
-=======
   const [text, setText] = useState("");
->>>>>>> bba9e6be6e0fc45968fe196897820d25a58b5c70
 
   const dispatch = useDispatch();
 
@@ -42,10 +38,6 @@ function GoalForm() {
           </div>
           <div className="flex items-center justify-between px-3 py-2 border-t">
             <button
-<<<<<<< HEAD
-              
-=======
->>>>>>> bba9e6be6e0fc45968fe196897820d25a58b5c70
               type="submit"
               className="  items-center mx-auto  py-2.5 px-4 text-xs font-medium text-center text-white bg-black rounded-lg focus:ring-4 focus:ring-blue-200  hover:bg-gray-700"
             >
